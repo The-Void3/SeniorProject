@@ -1,26 +1,30 @@
 using UnityEngine;
+using Mirror;
 
-public class example : MonoBehaviour
+public class movement : NetworkBehaviour
 {
+    public float speed = 5f;
+    private Rigidbody2D rb;
 
-    float speedX;
-    float speedY;
-    public float speed;
-    Rigidbody2D square;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        square = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnStartLocalPlayer()
     {
-        // want player to move freely around
-        speedX = Input.GetAxisRaw("Horizontal") * speed; //speed for player
-        speedY = Input.GetAxisRaw("Vertical") * speed;
+        Debug.Log("OnStartLocalPlayer fired!");
+    }
 
-        square.linearVelocity = new Vector2(speedX, speedY);
+    void FixedUpdate()
+    {
+        if (!isLocalPlayer) return;
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+
+        Debug.Log($"input: {x},{y}");
+
+        rb.linearVelocity = new Vector2(x, y) * speed;
     }
 }
