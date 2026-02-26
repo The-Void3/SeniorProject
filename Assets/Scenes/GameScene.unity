@@ -745,13 +745,25 @@ PrefabInstance:
       propertyPath: sceneId
       value: 2368608531
       objectReference: {fileID: 0}
+    - target: {fileID: 1497706788488429870, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4268862596610112959, guid: 0733a2d2746a6c040a11ac7e018f62d5, type: 3}
+    - target: {fileID: 1832106534094308315, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5598042
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832106534094308315, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.8847144
+      objectReference: {fileID: 0}
     - target: {fileID: 1832106534094308315, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.21
+      value: -0.6263
       objectReference: {fileID: 0}
     - target: {fileID: 1832106534094308315, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.52
+      value: 1.8313
       objectReference: {fileID: 0}
     - target: {fileID: 1832106534094308315, guid: 3cd9614c1f48efe41aac174100a38491, type: 3}
       propertyPath: m_LocalPosition.z
