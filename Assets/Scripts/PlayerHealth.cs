@@ -7,6 +7,7 @@ public class PlayerHealth : NetworkBehaviour
     void TakeHealth(){
         health--;
         if (health <= 0){
+            Debug.Log("Player died!");
             NetworkServer.Destroy(gameObject);
         }
     }
