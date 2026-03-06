@@ -10,6 +10,11 @@ using Mirror;
 
 public class NewNetworkManager : NetworkManager
 {
+    public Transform spawnBottom;
+    public Transform spawnTop;
+
+    private int playerCount = 0;
+
     // Overrides the base singleton so we don't
     // have to cast to this type everywhere.
     public static new NewNetworkManager singleton => (NewNetworkManager)NetworkManager.singleton;
@@ -149,7 +154,26 @@ public class NewNetworkManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        base.OnServerAddPlayer(conn);
+        GameObject player;
+
+        if (playerCount == 0)
+        {
+            player = Instantiate(playerPrefab, spawnBottom.position, Quaternion.identity);
+
+            movement m = player.GetComponent<movement>();
+            m.side = movement.Side.Bottom;
+        }
+        else
+        {
+            player = Instantiate(playerPrefab, spawnTop.position, Quaternion.Euler(0, 0, 180f));
+
+            movement m = player.GetComponent<movement>();
+            m.side = movement.Side.Top;
+        }
+
+        NetworkServer.AddPlayerForConnection(conn, player);
+
+        playerCount++;
     }
 
     /// <summary>
@@ -235,7 +259,11 @@ public class NewNetworkManager : NetworkManager
     /// This is invoked when a server is started - including when a host is started.
     /// <para>StartServer has multiple signatures, but they all cause this hook to be called.</para>
     /// </summary>
-    public override void OnStartServer() { }
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        playerCount = 0;
+    }
 
     /// <summary>
     /// This is invoked when the client is started.

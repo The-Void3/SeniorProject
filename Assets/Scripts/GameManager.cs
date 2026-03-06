@@ -8,9 +8,12 @@ public class GameManager : NetworkBehaviour
     [SyncVar] public bool gameOver = false;
     [SyncVar] public uint winnerNetId = 0;
 
+    private GameOverUI gameOverUI;
+
     void Awake()
     {
         Instance = this;
+        gameOverUI = FindFirstObjectByType<GameOverUI>();
     }
 
     [Server]
@@ -29,10 +32,9 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     void RpcGameOver(uint winner)
     {
-        // For now just log; we’ll wire UI next
-        Debug.Log($"[CLIENT] Game Over. Winner netId = {winner}");
+       Debug.Log($"[CLIENT] Game Over. Winner netId = {winner}");
 
-        // Optional: freeze local player input by disabling movement scripts, etc.
-        // We'll do this cleanly once UI exists.
+        if (gameOverUI != null)
+            gameOverUI.ShowResult(winner);
     }
 }
