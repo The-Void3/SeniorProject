@@ -47,8 +47,20 @@ public class movement : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
+        if (GameManager.Instance == null || GameManager.Instance.matchState != GameManager.MatchState.Playing)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
+
+        if (side == Side.Top)
+        {
+            x = -x;
+            y = -y;
+        }
 
         // NOTE: In most Unity versions this is rb.velocity, not rb.linearVelocity.
         // If rb.linearVelocity compiles for you, fine. Otherwise change to rb.velocity.
@@ -62,6 +74,9 @@ public class movement : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+
+        if (GameManager.Instance == null || GameManager.Instance.matchState != GameManager.MatchState.Playing)
+            return;
 
         if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
         {
@@ -83,6 +98,13 @@ public class movement : NetworkBehaviour
         b.GetComponent<Bullet>().ServerInit(dir, bulletSpeed);
 
         NetworkServer.Spawn(b);
+    }
+    
+    [Command]
+    public void CmdRequestRematch()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.ServerRequestRematch(netId);
     }
 
     private void ClampToSideLocal()

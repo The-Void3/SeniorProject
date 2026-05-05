@@ -36,6 +36,7 @@ public class Bullet : NetworkBehaviour
     {
         // If we hit a player, damage them
         PlayerHealth health = collision.collider.GetComponent<PlayerHealth>();
+        
         if (health != null)
         {
             health.TakeDamage(1);
