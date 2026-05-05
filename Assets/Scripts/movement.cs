@@ -47,8 +47,11 @@ public class movement : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        if (GameManager.Instance != null && GameManager.Instance.gameOver)
+        if (GameManager.Instance == null || GameManager.Instance.matchState != GameManager.MatchState.Playing)
+        {
+            rb.linearVelocity = Vector2.zero;
             return;
+        }
 
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
@@ -72,7 +75,7 @@ public class movement : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        if (GameManager.Instance != null && GameManager.Instance.gameOver)
+        if (GameManager.Instance == null || GameManager.Instance.matchState != GameManager.MatchState.Playing)
             return;
 
         if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
@@ -95,6 +98,13 @@ public class movement : NetworkBehaviour
         b.GetComponent<Bullet>().ServerInit(dir, bulletSpeed);
 
         NetworkServer.Spawn(b);
+    }
+    
+    [Command]
+    public void CmdRequestRematch()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.ServerRequestRematch(netId);
     }
 
     private void ClampToSideLocal()

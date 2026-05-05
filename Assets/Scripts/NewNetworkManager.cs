@@ -174,6 +174,11 @@ public class NewNetworkManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player);
 
         playerCount++;
+
+        if (playerCount == 2 && GameManager.Instance != null)
+        {
+            GameManager.Instance.ServerStartCountdown();
+        }
     }
 
     /// <summary>
@@ -214,6 +219,10 @@ public class NewNetworkManager : NetworkManager
     public override void OnClientConnect()
     {
         base.OnClientConnect();
+
+        GameOverUI ui = FindFirstObjectByType<GameOverUI>();
+        if (ui != null)
+            ui.HideResult();
     }
 
     /// <summary>
@@ -278,8 +287,11 @@ public class NewNetworkManager : NetworkManager
     /// <summary>
     /// This is called when a server is stopped - including when a host is stopped.
     /// </summary>
-    public override void OnStopServer() { }
-
+    public override void OnStopServer()
+    {
+        base.OnStopServer();
+        playerCount = 0;
+    }
     /// <summary>
     /// This is called when a client is stopped.
     /// </summary>
